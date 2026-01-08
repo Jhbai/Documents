@@ -65,53 +65,6 @@
 * **時間複雜度**：$O(n)$，僅需掃描一次。  
 * **空間複雜度**：$O(1)$，不需額外陣列。
 
-def trap(height):  
-    if not height: return 0  
-      
-    left, right \= 0, len(height) \- 1  
-    left\_max, right\_max \= 0, 0  
-    total\_water \= 0  
-      
-    while left \< right:  
-        if height\[left\] \< height\[right\]:  
-            \# 當前左側高度較小，處理左側  
-            if height\[left\] \>= left\_max:  
-                left\_max \= height\[left\] \# 更新左側最大牆高  
-            else:  
-                total\_water \+= left\_max \- height\[left\] \# 計算水量  
-            left \+= 1  
-        else:  
-            \# 當前右側高度較小，處理右側  
-            if height\[right\] \>= right\_max:  
-                right\_max \= height\[right\] \# 更新右側最大牆高  
-            else:  
-                total\_water \+= right\_max \- height\[right\] \# 計算水量  
-            right \-= 1  
-              
-    return total\_water
-
-### **解法二：單調堆疊 (Monotonic Stack)**
-
-思路：  
-維護一個遞減堆疊。當遇到較大的柱子時，彈出堆疊頂部並計算該層的水量。  
-def trap(height):  
-    stack \= \[\]  
-    total\_water \= 0  
-    for i in range(len(height)):  
-        while stack and height\[i\] \> height\[stack\[-1\]\]:  
-            bottom\_index \= stack.pop()  
-            if not stack: break \# 沒有左邊界，接不了水  
-              
-            left\_index \= stack\[-1\]  
-            \# 寬度是兩牆距離  
-            width \= i \- left\_index \- 1  
-            \# 高度是兩牆較矮者減去底部高度  
-            h \= min(height\[i\], height\[left\_index\]) \- height\[bottom\_index\]  
-            total\_water \+= width \* h  
-              
-        stack.append(i)  
-    return total\_water
-
 ## **5\. 總結**
 
 * **暴力法**：$O(n^2)$，對每一格重複掃描左右最大值。  
